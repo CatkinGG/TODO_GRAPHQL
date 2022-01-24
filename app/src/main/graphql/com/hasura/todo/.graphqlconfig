@@ -1,0 +1,17 @@
+{
+  "name": "Untitled GraphQL Schema",
+  "schemaPath": "schema.json",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://35.189.161.175:8080/v1/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL",
+          "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
+          "x-hasura-admin-secret": "myadminsecretkey"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

@@ -1,0 +1,129 @@
+plugins {
+    id 'com.android.application'
+    // Apollo
+    // This must go AFTER com.android.application plugin and BEFORE Kotlin plugin
+    id 'com.apollographql.apollo'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+
+
+android {
+    compileSdkVersion 30
+    defaultConfig {
+        applicationId "com.hasura.todo.Todo"
+        minSdkVersion 24
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "hasura"]
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // This is required by OkHttp
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
+
+repositories {
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+apollo {
+    customTypeMapping = [
+            "timestampz" : "java.util.Date"
+    ]
+}
+
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // AndroidX
+    implementation "androidx.core:core-ktx:$ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.activity:activity-ktx:$activity_ktx_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
+    implementation "com.google.android.material:material:$material_version"
+
+    // KTX Extensions
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktx_extensions_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$ktx_extensions_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$ktx_extensions_version"
+    implementation "androidx.preference:preference-ktx:$ktx_preference_version"
+
+    // Constraint Layout
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+
+    // Lifecycle, ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
+    implementation 'androidx.navigation:navigation-fragment:2.0.0'
+    implementation 'androidx.navigation:navigation-ui:2.0.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
+
+    // Apollo - GraphQL
+    implementation "com.apollographql.apollo:apollo-runtime:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-normalized-cache-sqlite:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-coroutines-support:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-rx3-support:$apolloVersion"
+    implementation "com.apollographql.apollo:apollo-api:$apolloVersion"
+
+    // OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor_version"
+
+    // IMPORTANT: Without this project will not build
+    // (because @Generated annotation in generated classes is unknown)
+
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+
+    compileOnly 'org.jetbrains:annotations:13.0'
+    testCompileOnly 'org.jetbrains:annotations:13.0'
+
+    // Auth0
+    implementation "com.auth0.android:auth0:1.15.2"
+
+    // Kotlin Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
+    implementation "androidx.hilt:hilt-work:$hilt_jetpack_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:$timber_version"
+}

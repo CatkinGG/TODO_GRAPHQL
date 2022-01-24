@@ -1,0 +1,51 @@
+query getAllTodoList {
+    todo_list(order_by: [{updated_at: desc}]) {
+        id
+        task
+        updated_at
+        created_at
+        assignee
+    }
+}
+
+query getTodoList($limit: Int, $offset: Int) {
+    todo_list(limit: $limit, offset: $offset, order_by: [{updated_at: desc}]) {
+        id
+        task
+        updated_at
+        created_at
+        assignee
+    }
+}
+
+mutation removeTodoList ($id: Int!) {
+    delete_todo_list(where: {id: {_eq: $id}}) {
+        affected_rows
+    }
+}
+
+mutation updateTodoList ($id: Int!, $assignee: String!, $task: String!) {
+    update_todo_list(where: {id: {_eq: $id}}, _set: {assignee: $assignee, task: $task}) {
+        affected_rows
+        returning {
+            assignee
+            created_at
+            id
+            task
+            updated_at
+        }
+    }
+}
+
+mutation addTodoList($assignee: String!, $task: String!) {
+    insert_todo_list(objects: [{assignee: $assignee, task: $task}]) {
+        affected_rows
+        returning {
+            assignee
+            created_at
+            task
+            updated_at
+        }
+    }
+}
+
